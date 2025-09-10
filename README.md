@@ -1,66 +1,129 @@
-## Foundry
+# 🌐 StakingApp
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A simple staking dApp built with **Solidity** and **Foundry**, that allows users to stake a fixed amount of ERC20 tokens and earn periodic rewards in ETH.  
+The project includes:
+- ✅ A staking smart contract  
+- ✅ A custom ERC20 token  
+- ✅ Unit tests with Foundry  
 
-Foundry consists of:
+---
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## ✨ Features
 
-## Documentation
+- 🔹 **Custom ERC20 Token (`StakingToken`)**
+  - Deployable ERC20 token with a `mint` function for testing.
 
-https://book.getfoundry.sh/
+- 🔹 **Staking Contract (`StakingApp`)**
+  - Stake a fixed token amount.
+  - Earn ETH rewards per staking period.
+  - Owner can change staking period and deposit ETH for rewards.
+  - Users can deposit, withdraw, and claim rewards.
 
-## Usage
+- 🔹 **Tests**
+  - Built with Foundry (`forge-std/Test.sol`).
+  - Includes token minting and contract deployment validation.
 
-### Build
+---
 
-```shell
-$ forge build
+## 📂 Project Structure
+
+```text
+├── src/
+│   ├── StakingApp.sol        # Main staking contract
+│   └── StakingToken.sol      # ERC20 token for staking
+├── test/
+│   ├── StakingAppTest.t.sol  # Tests for staking contract
+│   └── StakingTokenTest.t.sol# Tests for token
 ```
 
-### Test
+---
 
-```shell
-$ forge test
+## ⚙️ Contracts Overview
+
+### 📌 StakingToken.sol
+- Extends OpenZeppelin’s `ERC20`.
+- Includes a `mint` function for testing and distribution.
+
+### 📌 StakingApp.sol
+- Main logic for staking.  
+- **Key functions:**
+  - `depositTokenks(uint256 amount)` → Stake tokens.
+  - `withdrawTokens()` → Withdraw staked tokens.
+  - `claimRewards()` → Claim ETH rewards after staking period.
+  - `channgeStakingPeriod(uint256 newPeriod)` → Update staking period (only owner).
+
+---
+
+## 🚀 Getting Started
+
+### 🔧 Prerequisites
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) installed.
+
+### 📥 Install dependencies
+```bash
+forge install
 ```
 
-### Format
-
-```shell
-$ forge fmt
+### 🛠 Build project
+```bash
+forge build
 ```
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
+### 🧪 Run tests
+```bash
+forge test
 ```
 
-### Anvil
+---
 
-```shell
-$ anvil
+## 📖 Usage
+
+1. **Deploy `StakingToken`**
+   ```solidity
+   StakingToken stakingToken = new StakingToken("Staking Token", "STK");
+   ```
+
+2. **Deploy `StakingApp`**
+   ```solidity
+   StakingApp stakingApp = new StakingApp(
+       address(stakingToken),
+       owner,
+       stakingPeriod,
+       fixedStakingAmount,
+       rewardPerPeriod
+   );
+   ```
+
+3. **Fund the contract with ETH**  
+   The owner can send ETH to the contract (via `receive()`) to cover staking rewards.
+
+4. **Stake tokens**
+   - Approve the staking contract to spend tokens.
+   - Call `depositTokenks(fixedStakingAmount)`.
+
+5. **Claim rewards & withdraw**
+   - After the staking period → `claimRewards()`.
+   - To exit → `withdrawTokens()`.
+
+---
+
+## 🧪 Tests
+
+- **`StakingTokenTest.t.sol`**
+  - Validates ERC20 deployment and minting.
+- **`StakingAppTest.t.sol`**
+  - Ensures contracts are deployed correctly.
+
+Run with:
+```bash
+forge test -vv
 ```
 
-### Deploy
+---
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+## 📜 License
 
-### Cast
+This project is licensed under the **MIT License**.  
+Feel free to use, modify, and distribute it.  
 
-```shell
-$ cast <subcommand>
-```
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
