@@ -111,8 +111,20 @@ forge test
 
 - **`StakingTokenTest.t.sol`**
   - Validates ERC20 deployment and minting.
+
 - **`StakingAppTest.t.sol`**
   - Ensures contracts are deployed correctly.
+  - Verifies only owner can change staking period.
+  - Checks contract can receive ETH.
+  - Reverts on incorrect staking amount.
+  - Allows correct token deposit and updates mappings.
+  - Prevents multiple deposits by the same user.
+  - Handles withdrawals correctly (empty and valid).
+  - Reverts on claiming rewards if:
+    - Not staking,
+    - Staking period not elapsed,
+    - No ETH in contract.
+  - Allows correct reward claiming after staking period.
 
 Run with:
 ```bash
